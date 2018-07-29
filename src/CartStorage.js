@@ -4,6 +4,11 @@ class CartStorage {
         localStorage.setItem(config.name, JSON.stringify([]));
     }
     
+    getItem(id) {
+        let cartItems = this.getItems(); 
+        
+        return cartItems.find((item) => item.id === id);
+    }
     getItems() {
         return JSON.parse(localStorage.getItem(this._name));
     }
@@ -25,7 +30,8 @@ class CartStorage {
     removeItem(id) {
         let cart = JSON.parse(localStorage.getItem(this._name)); // Array version of the cart 
         
-        let newCart = cart.filter((item) => item.id !== id, 10); 
+        console.log(cart);
+        let newCart = cart.filter((item) => item.id !== id); 
         
         localStorage.setItem(this._name, JSON.stringify(newCart)); 
     }
