@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
 import CartStorage from './CartStorage';
 import PlusMinusButton from './PlusMinusButton';
 import CartItems from './CartItems';
@@ -26,42 +25,42 @@ class App extends Component {
       products: [
       {
         "id": "5b5a294fbf63ef80275f2fa3",
-        "picture": "http://placehold.it/32x32",
+        "picture": "http://placehold.it/85x100",
         "name": "Comvex",
         "alt": "Ezent",
         "price": 11.8
       },
       {
         "id": "5b5a294f29824c3215be744f",
-        "picture": "http://placehold.it/32x32",
+        "picture": "http://placehold.it/85x100",
         "name": "Infotrips",
         "alt": "Eventex",
         "price": 9.05
       },
       {
         "id": "5b5a294f6aeb53462f4a2052",
-        "picture": "http://placehold.it/32x32",
+        "picture": "http://placehold.it/85x100",
         "name": "Zytrex",
         "alt": "Pulze",
         "price": 4.04
       },
       {
         "id": "5b5a294ff9843844b196a127",
-        "picture": "http://placehold.it/32x32",
+        "picture": "http://placehold.it/85x100",
         "name": "Eventage",
         "alt": "Andryx",
         "price": 18.13
       },
       {
         "id": "5b5a294fcc486b36b7c55d06",
-        "picture": "http://placehold.it/32x32",
+        "picture": "http://placehold.it/85x100",
         "name": "Unisure",
         "alt": "Papricut",
         "price": 13.91
       },
       {
         "id": "5b5a294fde05d454472d3d4c",
-        "picture": "http://placehold.it/32x32",
+        "picture": "http://placehold.it/85x100",
         "name": "Digique",
         "alt": "Fleetmix",
         "price": 1.59
@@ -187,7 +186,7 @@ class App extends Component {
   render() {
     let userCart = this.getUserCart(); 
     return (
-      <div class="cart">
+      <div className="cart">
         <div className="cart__header">
           <p>My Cart ({userCart.length})</p>
         </div>

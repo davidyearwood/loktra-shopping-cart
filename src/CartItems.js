@@ -42,7 +42,7 @@ const CartItems = props => {
     });
     
     return (
-        <ul className="cartItems"> 
+        <ul className="cart-items"> 
             {cartItems} 
         </ul>
     );
