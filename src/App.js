@@ -1,28 +1,29 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import ItemList from './ItemList';
 import CartStorage from './CartStorage';
+import PlusMinusButton from './PlusMinusButton';
 import CartItems from './CartItems';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cart: []
+      cart: [],
+      numberField: 1
     };
     this.cartName = 'cart';
-    this.localCartStorage = new CartStorage(this.cartName);
-    
-    this.removeCartItemAt = this.removeCartItemAt.bind(this);
-    this.incrementQuantityAt = this.incrementQuantityAt.bind(this);
-    this.decrementQuantityAt = this.decrementQuantityAt.bind(this);
-    this.updateQuantityAt = this.updateQuantityAt.bind(this);
+    this.localCartStorage = new CartStorage({name: this.cartName});
+   
+    this.handleChangeNumberField = this.handleChangeNumberField.bind(this);
+    this.handleClickMinusButton = this.handleClickMinusButton.bind(this);
+    this.handleClickPlusButton = this.handleClickPlusButton.bind(this);
+    this.handleClickRemoveButton = this.handleClickRemoveButton.bind(this);
   }
   
   componentDidMount() {
     this.setState({
-      mockApi: [
+      products: [
       {
         "id": "5b5a294fbf63ef80275f2fa3",
         "picture": "http://placehold.it/32x32",
@@ -68,8 +69,10 @@ class App extends Component {
     ]
     }); 
     
+    this.addTwoItemsToCartStorage();
     this.hydrateStateWithLocalStorage();
     window.addEventListener("beforeunload", this.saveStateToLocalStorage.bind(this));
+
   }
   
   componentWillUnMount() {
@@ -90,17 +93,7 @@ class App extends Component {
         [cartName]: cartItems
       });
     }
-  }
-  
-  getCartItems() {
-    let cartItems = this.state.cart.map((item) => {
-      return {
-        ...item, 
-        ...this.getMockApi(item.id)
-      };
-    });
-    
-    return cartItems || [];
+
   }
   
   // For mock purposes
@@ -109,52 +102,45 @@ class App extends Component {
     this.localCartStorage.addItem({id: '5b5a294fcc486b36b7c55d06', quantity: 2});
   }
   
-  getItem(id) {
-    return this.state.cart.find((cartItem) => cartItem.id == id);
+  decrementQuantity(item, num) {
+    item = {
+      ...item, 
+      quantity: item.quantity - num
+    };
+    
+    return item; 
   }
   
-  getMockApi(id) {
-    return this.state.mockApi.find((item) => item.id === id);
-  }
-  removeCartItemAt(id) {
-    let cart = this.state.cart.filter((item) => item.id !== id); 
+  incrementQuantity(item, num) {
+    item = {
+      ...item, 
+      quantity: item.quantity + num
+    };
     
-    this.setState({
-      [this.cartName]: cart
-    });
+    return item; 
   }
   
-  incrementQuantityAt(id) {
-    let cartItems = this.state.cart.map((item) => {
-      if (item.id == id) {
-        item.quantity += 1;
-      }
-      return item;
-    });
-    
-    this.setState({
-      cart: cartItems    
-    });
-  } 
-
-  decrementQuantityAt(id) {
-    let cartItems = this.state.cart.map((item) => {
-      if (item.id == id) {
-        item.quantity -= 1;
-      }
-      return item;
-    });
-    
-    this.setState({
-      cart: cartItems    
-    });
-  } 
   
-  updateQuantityAt(id, value) {
+  handleChangeNumberField(id, userInput) {
     let cart = this.state.cart.map((item) => {
-      if (item.id === id) {
-        item.quantity = value; 
-      }  
+      if (item.id === id ) {
+        item.quantity = (parseInt(userInput, 10) < 1) ? 1 : parseInt(userInput, 10); 
+      }
+      return item; 
+    });
+  
+    this.setState({
+      cart: cart 
+    });
+  }
+  
+  handleClickMinusButton(id) {
+    let cart = this.state.cart.map((item) => {
+      if (item.id === id && item.quantity > 1) {
+        item = this.decrementQuantity(item, 1); // decrementQuantityByOne
+      }
+      
+      return item; 
     });
     
     this.setState({
@@ -162,17 +148,60 @@ class App extends Component {
     });
   }
   
+  handleClickPlusButton(id) {
+    let cart = this.state.cart.map((item) => {
+      if (item.id === id) {
+        item = this.incrementQuantity(item, 1); // decrementQuantityByOne
+      }
+      
+      return item; 
+    });
+    
+      this.setState({
+      cart: cart
+    });
+  }
+  
+  handleClickRemoveButton(id) {
+    let cart = this.state.cart.filter((item) => item.id !== id);
+    this.setState({
+      cart: cart
+    });
+  }
+  
+  getProduct(id) {
+    return this.state.products.find(item => item.id === id) || {};
+  }
+  
+  getUserCart() {
+    let userCart = this.state.cart.map((item) => {
+      return {
+        ...this.getProduct(item.id), 
+        quantity: item.quantity
+      };
+    });
+
+    return userCart || []; 
+  }
+  
   render() {
-    let cartItems = this.getCartItems();
+    let userCart = this.getUserCart(); 
     return (
-      <div className="App">
-        <CartItems 
-          cartItems={cartItems}
-          onClickingIncrementButton={this.incrementQuantityAt}
-          onClickingDecrementButton={this.decrementQuantityAt}
-          onClickingRemoveButton={this.removeCartItemAt}
-          onChangingQuantity={this.updateQuantityAt}
-        /> 
+      <div class="cart">
+        <div className="cart__header">
+          <p>My Cart ({userCart.length})</p>
+        </div>
+        <CartItems
+          cartItems={userCart}
+          onClickMinusButton={this.handleClickMinusButton}
+          onClickRemoveButton={this.handleClickRemoveButton}
+          onChangeNumberField={this.handleChangeNumberField}
+          onClickPlusButton={this.handleClickPlusButton}
+        />
+        <div className="btn-container">
+          <button className="btn">Continue Shopping</button>
+          <button className="btn">Place Order</button>
+        </div>
       </div>
     );
   }
