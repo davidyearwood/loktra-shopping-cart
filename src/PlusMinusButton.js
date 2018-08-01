@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 const PlusMinusButton = props => {
     return(
-        <form className="plus-minus-button"> 
-            <button className="btn btn--plus" onClick={props.onClickPlusButton}>-</button>
-            <input type="text" value={props.numberField} required onChange={props.onChangeNumberField} />
-            <button className="btn btn--minus" onClick={props.onClickMinusButton}>+</button>
+        <form className="plus-minus-button">
+            <button className="btn btn--minus" onClick={props.onClickMinusButton}>-</button>
+            <input type="number" value={props.numberField} onChange={props.onChangeNumberField} />
+            <button className="btn btn--plus" onClick={props.onClickPlusButton}>+</button>
         </form>    
     );
 }
