@@ -12,12 +12,12 @@ const CartItem = props => {
             </div>
             <div className="cart-item__controls">
                 <PlusMinusButton 
-                    quantity={props.quantity}
-                    onChangingQuantity={props.onChangingQuantity}
-                    onClickingDecrementButton={props.onClickingDecrementButton}
-                    onClickingIncrementButton={props.onClickingIncrementButton}
+                    numberField={props.numberField}
+                    onChangeNumberField={props.onChangeNumberField}
+                    onClickMinusButton={props.onClickMinusButton}
+                    onClickPlusButton={props.onClickPlusButton}
                 />
-                <button className="btn btn--remove" onClick={props.onClickingRemoveButton}>remove</button>
+                <button className="btn btn--remove" onClick={props.onClickRemoveButton}>remove</button>
             </div>
         </li>
     );
@@ -27,11 +27,11 @@ CartItem.propTypes = {
     src: PropTypes.string.isRequired,
     alt: PropTypes.string.isRequired, 
     name: PropTypes.string.isRequired, 
-    price: PropTypes.number.isRequired, 
-    quantity: PropTypes.number.isRequired, 
-    onChangingQuantity: PropTypes.func.isRequired,
-    onClickingRemoveBtn: PropTypes.func.isRequired,
-    onClickingDecrementButton: PropTypes.func.isRequired, 
-    onClickingIncrementButton: PropTypes.func.isRequired,
+    price: PropTypes.string.isRequired, 
+    numberField: PropTypes.number.isRequired, 
+    onChangeNumberField: PropTypes.func.isRequired,
+    onClickRemoveButton: PropTypes.func.isRequired,
+    onClickMinusButton: PropTypes.func.isRequired, 
+    onClickPlusButton: PropTypes.func.isRequired,
 };
 export default CartItem; 
