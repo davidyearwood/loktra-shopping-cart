@@ -1,34 +1,42 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CartItem from './CartItem'; 
 
-const ItemList = props => {
+const CartItems = props => {
 
     var cartItems = props.cartItems.map((item, index) => {
-       return (
+        return (
             <CartItem 
-                key={item.id} 
-                src={item.picture} 
-                alt={item.alt} 
-                name={item.name} 
+                key={item.id}
+                src={item.picture}
+                alt={item.alt}
+                name={item.name}
                 price={item.price}
-                quantity={item.quantity}
-                id={item.id}
-                onChangingQuantity={(e) => {
-                    e.preventDefault(); 
-                    props.onChangingQuantity(item.id); 
-                }}
-                onClickingDecrementButton={(e) => {
-                    e.preventDefault(); 
-                    props.onClickingDecrementButton(item.id); 
-                }}
-                onClickingIncrementButton={(e) => {
-                    e.preventDefault(); 
-                    props.onClickingIncrementButton(item.id); 
-                }}
-                onClickingRemoveButotn={(e) => {
-                    e.preventDefault(); 
-                    props.onClickingRemoveButton(item.id);
-                }}
+                numberField={item.quantity}
+                onChangeNumberField={
+                    (e) => { 
+                        e.preventDefault(); 
+                        props.onChangeNumberField(item.id, e.target.value);
+                    }     
+                }
+                onClickMinusButton={
+                    (e) => {
+                        e.preventDefault();
+                        props.onClickMinusButton(item.id); 
+                    }
+                }
+                onClickPlusButton={
+                    (e) => {
+                        e.preventDefault(); 
+                        props.onClickPlusButton(item.id); 
+                    }
+                }
+                onClickRemoveButton={
+                    (e) => {
+                        e.preventDefault();
+                        props.onClickRemoveButton(item.id);
+                    }
+                }
             />
         );
     });
@@ -41,4 +49,10 @@ const ItemList = props => {
     
 };
 
-export default ItemList; 
+CartItems.propTypes = {
+  onClickRemoveButton: PropTypes.func.isRequired, 
+  onClickPlusButton: PropTypes.func.isRequired, 
+  onClickMinusButton: PropTypes.func.isRequired
+};
+
+export default CartItems; 
