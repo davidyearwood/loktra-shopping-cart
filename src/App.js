@@ -199,7 +199,7 @@ class App extends Component {
         />
         <div className="btn-container">
           <button className="btn">Continue Shopping</button>
-          <button className="btn">Place Order</button>
+          <button className="btn btn--primary">Place Order</button>
         </div>
       </div>
     );

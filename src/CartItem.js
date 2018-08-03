@@ -19,7 +19,7 @@ const CartItem = props => {
                     onClickMinusButton={props.onClickMinusButton}
                     onClickPlusButton={props.onClickPlusButton}
                 />
-                <button className="btn btn--remove" onClick={props.onClickRemoveButton}>remove</button>
+                <button className="btn--remove" onClick={props.onClickRemoveButton}>remove</button>
             </div>
         </li>
     );
