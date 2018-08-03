@@ -210,14 +210,12 @@ class App extends Component {
     let userCart = this.getUserCart(); 
     return (
       <div class="app">
-      <main class="products">
         {this.state.isProductsLoaded ? (
           <Products productList={this.state.products} onClick={this.appendProductToCart} />
           ) : (
             <h1> No Products </h1>
           )
         }
-      </main>
       <aside className="cart">
         <div className="cart__header">
           <p>My Cart ({userCart.length})</p>
