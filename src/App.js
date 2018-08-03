@@ -3,13 +3,14 @@ import logo from './logo.svg';
 import CartStorage from './CartStorage';
 import PlusMinusButton from './PlusMinusButton';
 import CartItems from './CartItems';
+import Products from './Products';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       cart: [],
-      numberField: 1
+      isProductsLoaded: false
     };
     this.cartName = 'cart';
     this.localCartStorage = new CartStorage({name: this.cartName});
@@ -18,10 +19,12 @@ class App extends Component {
     this.handleClickMinusButton = this.handleClickMinusButton.bind(this);
     this.handleClickPlusButton = this.handleClickPlusButton.bind(this);
     this.handleClickRemoveButton = this.handleClickRemoveButton.bind(this);
+    this.appendProductToCart = this.appendProductToCart.bind(this);
   }
   
   componentDidMount() {
     this.setState({
+      isProductsLoaded: true,
       products: [
       {
         "id": "5b5a294fbf63ef80275f2fa3",
@@ -68,19 +71,19 @@ class App extends Component {
     ]
     }); 
     
-    this.addTwoItemsToCartStorage();
+    // this.addTwoItemsToCartStorage();
     this.hydrateStateWithLocalStorage();
     window.addEventListener("beforeunload", this.saveStateToLocalStorage.bind(this));
 
   }
   
   componentWillUnMount() {
-    window.removeEventListener("beforeunload", this.saveStateToLocalStorage.bind(this));
     this.saveStateToLocalStorage();
+    window.removeEventListener("beforeunload", this.saveStateToLocalStorage.bind(this));
   }
   
   saveStateToLocalStorage() {
-    localStorage.setItem(this.cartName, JSON.stringify(this.state.cart));
+    localStorage.setItem("cart", JSON.stringify(this.state.cart));
   }
   
   hydrateStateWithLocalStorage() {
@@ -183,10 +186,39 @@ class App extends Component {
     return userCart || []; 
   }
   
+  // 1. Check to see if the id that is being added exists in the cart already
+    // if yes, add the quantity to the existing item quantity
+    // if no, append the new item to the cart
+  appendProductToCart(id) {
+    var quantity = 2; // for testing purposes only
+    var cart = this.state.cart;
+    var NOTFOUND = -1; 
+    var found = cart.findIndex((cartItem) => cartItem.id === id);
+    
+    if (found === NOTFOUND) {
+      cart.push({id: id, quantity: quantity}); 
+    } else {
+      cart[found].quantity += quantity; 
+    }
+    
+    this.setState({
+      cart: cart
+    });
+  }
+  
   render() {
     let userCart = this.getUserCart(); 
     return (
-      <div className="cart">
+      <div class="app">
+      <main class="products">
+        {this.state.isProductsLoaded ? (
+          <Products productList={this.state.products} onClick={this.appendProductToCart} />
+          ) : (
+            <h1> No Products </h1>
+          )
+        }
+      </main>
+      <aside className="cart">
         <div className="cart__header">
           <p>My Cart ({userCart.length})</p>
         </div>
@@ -201,6 +233,7 @@ class App extends Component {
           <button className="btn">Continue Shopping</button>
           <button className="btn btn--primary">Place Order</button>
         </div>
+      </aside>
       </div>
     );
   }
