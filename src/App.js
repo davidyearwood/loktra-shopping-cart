@@ -4,13 +4,15 @@ import CartStorage from './CartStorage';
 import PlusMinusButton from './PlusMinusButton';
 import CartItems from './CartItems';
 import Products from './Products';
+import CartIcon from './CartIcon'; 
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       cart: [],
-      isProductsLoaded: false
+      isProductsLoaded: false,
+      isCartDisplay: false
     };
     this.cartName = 'cart';
     this.localCartStorage = new CartStorage({name: this.cartName});
@@ -20,6 +22,7 @@ class App extends Component {
     this.handleClickPlusButton = this.handleClickPlusButton.bind(this);
     this.handleClickRemoveButton = this.handleClickRemoveButton.bind(this);
     this.appendProductToCart = this.appendProductToCart.bind(this);
+    this.toggleCart = this.toggleCart.bind(this);
   }
   
   componentDidMount() {
@@ -196,9 +199,7 @@ class App extends Component {
     return userCart || []; 
   }
   
-  // 1. Check to see if the id that is being added exists in the cart already
-    // if yes, add the quantity to the existing item quantity
-    // if no, append the new item to the cart
+
   appendProductToCart(id) {
     var quantity = 2; // for testing purposes only
     var cart = this.state.cart;
@@ -219,16 +220,38 @@ class App extends Component {
 
   }
   
+  cartTotal() {
+    let userCart = this.getUserCart(); 
+    
+    return userCart.reduce(
+      (acc, currentValue) => acc + (currentValue.quantity * currentValue.price)
+    , 0).toFixed(2);
+  }
+  
+  toggleCart() {
+    this.setState({
+      isCartDisplay: !this.state.isCartDisplay
+    });
+  }
+  
   render() {
     let userCart = this.getUserCart(); 
     return (
       <div class="app">
+        <a href="#" className="" onClick={this.toggleCart}>
+            <div className="cart-summary">
+              <span className="cart-summary__value">${this.cartTotal()}</span>
+              <CartIcon counter={this.state.cart.length} />
+            </div>
+        </a>
         {this.state.isProductsLoaded ? (
           <Products productList={this.state.products} onClick={this.appendProductToCart} />
           ) : (
             <h1> No Products </h1>
           )
         }
+      
+      { this.state.isCartDisplay ? (
       <aside className="cart">
         <div className="cart__header">
           <p>My Cart ({userCart.length})</p>
@@ -244,7 +267,10 @@ class App extends Component {
           <button className="btn">Continue Shopping</button>
           <button className="btn btn--primary">Place Order</button>
         </div>
-      </aside>
+      </aside> 
+      ) : (
+        null
+      )} 
       </div>
     );
   }
