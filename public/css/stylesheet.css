@@ -1,6 +1,5 @@
 .app {
-    display: flex;
-    justify-content: space-between;
+
 }
 .btn {
     background-color: #F9F9F9;
@@ -43,10 +42,15 @@
     padding-right: 15px;
 }
 .cart {
+    position: absolute;
+    background: #ffffff;
     box-sizing: border-box;
     border: 1px solid #ccc;
     box-shadow: 0px 1px 4px 1px #ccc;
-    width: 195%;
+    top: 5%;
+    left: 3%;
+    width: 95%;
+    z-index: 7;
 }
 .cart-icon {
     display: block;
@@ -140,6 +144,8 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     list-style-type: none;
+    margin-left: auto;
+    margin-right: auto;
     padding-left: 30px;
     padding-right: 30px;
     width: 80%;
@@ -159,10 +165,6 @@
 }
 
 @media (min-width: 800px) {
-    .btn {
-        flex-basis: 49%;
-    }
-    
     .cart {
         width: 20%;
     }

@@ -255,6 +255,7 @@ class App extends Component {
       <aside className="cart">
         <div className="cart__header">
           <p>My Cart ({userCart.length})</p>
+          <button className="close-cart"><img src="img/times-solid.svg" /></button>
         </div>
         <CartItems
           cartItems={userCart}
@@ -264,7 +265,6 @@ class App extends Component {
           onClickPlusButton={this.handleClickPlusButton}
         />
         <div className="btn-container">
-          <button className="btn">Continue Shopping</button>
           <button className="btn btn--primary">Place Order</button>
         </div>
       </aside> 
