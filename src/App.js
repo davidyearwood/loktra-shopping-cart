@@ -77,13 +77,15 @@ class App extends Component {
 
   }
   
-  componentWillUnMount() {
-    this.saveStateToLocalStorage();
+  componentWillUnmount() {
     window.removeEventListener("beforeunload", this.saveStateToLocalStorage.bind(this));
+  
+    this.saveStateToLocalStorage();
+
   }
   
   saveStateToLocalStorage() {
-    localStorage.setItem("cart", JSON.stringify(this.state.cart));
+    localStorage.setItem(this.cartName, JSON.stringify(this.state.cart));
   }
   
   hydrateStateWithLocalStorage() {
@@ -92,7 +94,7 @@ class App extends Component {
       let cartItems = JSON.parse(localStorage.getItem(cartName)); 
       
       this.setState({
-        [cartName]: cartItems
+        cart: cartItems
       });
     }
 
@@ -148,6 +150,8 @@ class App extends Component {
     this.setState({
       cart: cart
     });
+    
+    localStorage.setItem(this.cartName, JSON.stringify(cart));
   }
   
   handleClickPlusButton(id) {
@@ -159,9 +163,12 @@ class App extends Component {
       return item; 
     });
     
-      this.setState({
+    this.setState({
       cart: cart
     });
+    
+    localStorage.setItem(this.cartName, JSON.stringify(cart));
+
   }
   
   handleClickRemoveButton(id) {
@@ -169,6 +176,9 @@ class App extends Component {
     this.setState({
       cart: cart
     });
+    
+    localStorage.setItem(this.cartName, JSON.stringify(cart));
+
   }
   
   getProduct(id) {
@@ -204,6 +214,9 @@ class App extends Component {
     this.setState({
       cart: cart
     });
+    
+    localStorage.setItem(this.cartName, JSON.stringify(cart));
+
   }
   
   render() {
